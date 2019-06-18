@@ -353,7 +353,7 @@ app.get('/getQueue', async (req, res) => {
   const cachedPhotos = await mediaItemCache.getItem(userId);
   const stored = await storage.getItem(userId);
 
-  if (cachedPhotos) {
+  if (!cachedPhotos) {  // to force cache do !cachedPhotos
     // Items are still cached. Return them.
     logger.verbose('Returning cached photos.');
     res.status(200).send({photos: cachedPhotos, parameters: stored.parameters});
