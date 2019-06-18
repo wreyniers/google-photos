@@ -57,7 +57,7 @@ pre {
 }
 
 #images_empty {
-  padding: 40px 0;
+  padding: 0;
   text-align: center;
 }
 
@@ -83,8 +83,33 @@ pre {
   bottom: 50px;
 }
 
+.fancybox-is-open * {
+  cursor:none;
+}
+
+.fancybox-show-caption * {
+  cursor:pointer;
+}
+
+.fancybox-slide, .fancybox-slide--image {
+  padding:0;
+}
+
 .fancybox-bg {
   opacity: 1 !important;
+  background: black;
+}
+
+.fancybox-progress {
+  background: white;
+  height:1px;
+}
+
+.fancybox-caption {
+  background:none;
+  padding:0 10px 0 0; 
+  font-size:10px;
+  text-align:right;
 }
 
 .loading-dialog {
@@ -94,16 +119,16 @@ pre {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 1);
   display: none;
   z-index: 1000;
   text-align: center;
 }
 
-.loading-dialog h1 {
-  color: #ffffff;
+.mdl-spinner {
+  position:absolute;
+  top:50%;
 }
-
 #error {
   background: lightcoral;
   padding: 1.25% 7.5%;
@@ -216,6 +241,10 @@ p .gp-button {
 
 .mdl-layout__header-row .mdl-navigation__link:first-child {
   padding-left: 0;
+}
+
+.fancybox-active .mdl-layout__container {
+  overflow:hidden;
 }
 
 .hidden {
