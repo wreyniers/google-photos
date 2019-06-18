@@ -14,6 +14,32 @@
  * limitations under the License.
  */
 
+ body {
+  background: black;
+  color:white;
+ }
+
+.mdl-layout__header {
+  background: #221F1F;
+}
+
+.mdl-button--accent.mdl-button--accent.mdl-button--raised, .mdl-button--accent.mdl-button--accent.mdl-button--fab {
+  background: #221F1F;
+}
+
+.mdl-checkbox__box-outline {
+  border-color: white;
+}
+
+.mdl-list__item {
+  color:white;
+}
+
+.mdl-list__item--two-line .mdl-list__item-primary-content .mdl-list__item-sub-title {
+  color: rgba(255,255,255,.5);
+}
+
+
 .thumbnail {
   height: 200px;
   padding: 3px;
@@ -72,7 +98,7 @@ pre {
 }
 
 .snippet {
-  background: #efefef;
+  background: #221f1f;
   padding: 16px;
   overflow: auto;
 }
@@ -158,14 +184,17 @@ pre {
 
 /*Special Google Photos Button based on MDL button styles */
 
+.mdl-layout__content {
+  width:100%;
+}
+
 .gp-button {
   border: none;
   border-radius: 2px;
-  color: rgb(0, 0, 0);
+  color:white;
   position: relative;
   height: 40px;
-  margin: 0;
-  min-width: 241px;
+  margin: 0;  
   padding: 0 16px 0 48px;
   display: inline-block;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
