@@ -59,10 +59,10 @@ function showPreview(source, mediaItems) {
     // Compile the caption, conisting of the description, model and time.
     const description = item.description ? item.description : '';
     const model = item.mediaMetadata.photo.cameraModel ?
-        `#Shot on ${item.mediaMetadata.photo.cameraModel}` :
+        `${item.mediaMetadata.photo.cameraModel}` :
         '';
     const time = item.mediaMetadata.creationTime;
-    const captionText = `${description} ${model} (${time})`
+    const captionText = `${time} - ${model}`
 
     // Each image is wrapped by a link for the fancybox gallery.
     // The data-width and data-height attributes are set to the
@@ -90,8 +90,6 @@ function showPreview(source, mediaItems) {
     const linkToGooglePhotos = $('<a />')
                                    .attr('href', item.productUrl)
                                    .text('[Click to open in Google Photos]');
-    imageCaption.append($('<br />'));
-    imageCaption.append(linkToGooglePhotos);
     linkToFullImage.append(imageCaption);
 
     // Add the link (consisting of the thumbnail image and caption) to
@@ -114,6 +112,7 @@ function loadQueue() {
       hideLoadingDialog();
       showPreview(data.parameters, data.photos);
       hideLoadingDialog();
+      startSlideShow();
       console.log('Loaded queue.');
     },
     error: (data) => {
@@ -121,6 +120,31 @@ function loadQueue() {
       handleError('Could not load queue', data)
     }
   });
+
+}
+
+function shuffle(){
+  console.log('Shuffling')
+    $("#images-container").each(function(){
+        var divs = $(this).find('a');
+        for(var i = 0; i < divs.length; i++) $(divs[i]).remove();            
+        //the fisher yates algorithm, from http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
+        var i = divs.length;
+        if ( i == 0 ) return false;
+        while ( --i ) {
+           var j = Math.floor( Math.random() * ( i + 1 ) );
+           var tempi = divs[i];
+           var tempj = divs[j];
+           divs[i] = tempj;
+           divs[j] = tempi;
+         }
+        for(var i = 0; i < divs.length; i++) $(divs[i]).appendTo(this);
+    });                    
+}
+
+function startSlideShow(){
+  shuffle(); // Shuffle before starting slideshow
+  $('#images-container a').first().click()
 }
 
 $(document).ready(() => {
@@ -135,9 +159,13 @@ $(document).ready(() => {
     image: {preload: true},
     transitionEffect: 'fade',
     transitionDuration: 1000,
-    fullScreen: {autoStart: false},
+    fullScreen: {autoStart: true},
+    preventCaptionOverlap: false,
+    idleTime: 5,
+    infobar: true,
+    preload: true,
     // Automatically advance after 3s to next photo.
-    slideShow: {autoStart: true, speed: 3000},
+    slideShow: {autoStart: true, speed: 30000, progress: false},
     // Display the contents figcaption element as the caption of an image
     caption: function(instance, item) {
       return $(this).find('figcaption').html();
@@ -146,8 +174,7 @@ $(document).ready(() => {
 
   // Clicking the 'view fullscreen' button opens the gallery from the first
   // image.
-  $('#startSlideshow')
-      .on('click', (e) => $('#images-container a').first().click());
+  $('#startSlideshow').on('click', (e) => {startSlideShow()});     
 
   // Clicking log out opens the log out screen.
   $('#logout').on('click', (e) => {
