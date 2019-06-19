@@ -59,10 +59,16 @@ function showPreview(source, mediaItems) {
     // Compile the caption, conisting of the description, model and time.
     const description = item.description ? item.description : '';
     const model = item.mediaMetadata.photo.cameraModel ?
-        `${item.mediaMetadata.photo.cameraModel}` :
+        `: ${item.mediaMetadata.photo.cameraModel}` :
         '';
     const time = item.mediaMetadata.creationTime;
-    const captionText = `${time} - ${model}`
+    const focalLength = item.mediaMetadata.photo.focalLength ?
+        ` ${item.mediaMetadata.photo.focalLength}mm ` : '';
+    const apertureFNumber = item.mediaMetadata.photo.apertureFNumber ?
+        ` f/${item.mediaMetadata.photo.apertureFNumber}` : '' ;
+    const isoEquivalent = item.mediaMetadata.photo.isoEquivalent ?
+        ` ISO${item.mediaMetadata.photo.isoEquivalent}` : '' ;
+    const captionText = `${time} ${model} [${focalLength}${apertureFNumber} ${isoEquivalent}]`
 
     // Each image is wrapped by a link for the fancybox gallery.
     // The data-width and data-height attributes are set to the
@@ -157,8 +163,8 @@ $(document).ready(() => {
     loop: true,
     buttons: ['slideShow', 'fullScreen', 'close'],
     image: {preload: true},
-    transitionEffect: 'fade',
-    transitionDuration: 1000,
+    transitionEffect: 'none',
+    transitionDuration: 0,
     fullScreen: {autoStart: true},
     preventCaptionOverlap: false,
     idleTime: 5,
