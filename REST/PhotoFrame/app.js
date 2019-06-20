@@ -91,6 +91,7 @@ const sessionMiddleware = session({
   saveUninitialized: true,
   store: new fileStore({}),
   secret: 'photo frame sample',
+  cookie: {maxAge: 25920000000}  // set cookie to
 });
 
 // Console transport for winton.
@@ -353,7 +354,7 @@ app.get('/getQueue', async (req, res) => {
   const cachedPhotos = await mediaItemCache.getItem(userId);
   const stored = await storage.getItem(userId);
 
-  if (!cachedPhotos) {  // to force cache do !cachedPhotos
+  if (cachedPhotos) {  // to force cache do !cachedPhotos
     // Items are still cached. Return them.
     logger.verbose('Returning cached photos.');
     res.status(200).send({photos: cachedPhotos, parameters: stored.parameters});
