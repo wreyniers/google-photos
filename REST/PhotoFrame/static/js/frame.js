@@ -169,7 +169,6 @@ $(document).ready(() => {
     preventCaptionOverlap: false,
     idleTime: 5,
     infobar: true,
-    preload: true,
     // Automatically advance after 3s to next photo.
     slideShow: {autoStart: true, speed: 30000, progress: false},
     // Display the contents figcaption element as the caption of an image
