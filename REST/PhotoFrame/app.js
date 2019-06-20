@@ -48,7 +48,7 @@ app.set('view engine', 'ejs');
 // documentation.
 const mediaItemCache = persist.create({
   dir: 'persist-mediaitemcache/',
-  ttl: 3300000,  // 55 minutes
+  ttl: 30*60*1000  // default is 55 minutes
 });
 mediaItemCache.init();
 
