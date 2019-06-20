@@ -165,7 +165,7 @@ $(document).ready(() => {
     image: {preload: true},
     transitionEffect: 'none',
     transitionDuration: 0,
-    fullScreen: {autoStart: true},
+    fullScreen: {autoStart: false},
     preventCaptionOverlap: false,
     idleTime: 5,
     infobar: true,
