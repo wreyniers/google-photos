@@ -71,6 +71,11 @@ pre {
   margin: 0 auto;
 }
 
+.slideshow-content {
+  padding: 0% 2%;
+  margin: 0 auto;
+}
+
 .subhead {
   font-size: 1.2em;
 }
@@ -164,7 +169,7 @@ pre {
 
 #images-container,
 #images_empty {
-  padding-top: 2.5%;
+  padding: 2.5% 0;
 }
 
 .demo-content {

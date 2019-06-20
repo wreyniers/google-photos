@@ -118,7 +118,9 @@ function loadQueue() {
       hideLoadingDialog();
       showPreview(data.parameters, data.photos);
       hideLoadingDialog();
-      startSlideShow();
+      if (window.location.href.indexOf('slideshow') > 0) {
+        startSlideShow();
+      }
       console.log('Loaded queue.');
     },
     error: (data) => {
@@ -161,7 +163,7 @@ $(document).ready(() => {
   $().fancybox({
     selector: '[data-fancybox="gallery"]',
     loop: true,
-    buttons: ['slideShow', 'fullScreen', 'close'],
+    buttons: ['slideShow', 'fullScreen', 'close', 'download'],
     image: {preload: true},
     animationEffect: 'fade',
     animationDuration: 1500,
@@ -170,7 +172,13 @@ $(document).ready(() => {
     fullScreen: {autoStart: false},
     preventCaptionOverlap: false,
     idleTime: 5,
-    infobar: true,
+    infobar: false,
+    arrows: false,
+    toolbar: false,
+    // Unhide manage buttons
+    afterClose: function() {
+      $('.floating-button').show();
+    },
     // Automatically advance after 3s to next photo.
     slideShow: {autoStart: true, speed: 30000, progress: false},
     // Display the contents figcaption element as the caption of an image
@@ -178,10 +186,13 @@ $(document).ready(() => {
       return $(this).find('figcaption').html();
     }
   });
-
+  
   // Clicking the 'view fullscreen' button opens the gallery from the first
   // image.
-  $('#startSlideshow').on('click', (e) => {startSlideShow()});     
+  $('#startSlideshow').on('click', (e) => {startSlideShow()});
+  $('#manage').on('click', (e) => {
+    window.location = '/';
+  })    
 
   // Clicking log out opens the log out screen.
   $('#logout').on('click', (e) => {

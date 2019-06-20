@@ -219,6 +219,11 @@ app.get('/album', (req, res) => {
   renderIfAuthenticated(req, res, 'pages/album');
 });
 
+// Loads the slideshow page
+app.get('/slideshow', (req, res) => {
+  renderIfAuthenticated(req, res, 'pages/slideshow');
+});
+
 
 // Handles form submissions from the search page.
 // The user has made a selection and wants to load photos into the photo frame

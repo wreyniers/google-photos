@@ -28,28 +28,7 @@
 <body>
 	<!-- Always shows a header, even in smaller screens. -->
 	<div class="mdl-layout--fixed-header mdl-js-layout">
-		<header class="mdl-layout__header mdl-layout__header--waterfall">
-			<div class="mdl-layout__header-row">
-				<!-- Title -->
-				<span class="mdl-layout-title">Photo Frame</span>
-				<!-- Add spacer, to align avatar/disconnect to the right -->
-				<div class="mdl-layout-spacer"></div>
-				<nav class="mdl-navigation">
-					<img src=" <%= avatarUrl %>" id="userAvatar" />
-					 <%= name %>
-					<a class="mdl-navigation__link" href="/logout">Disconnect</a>
-				</nav>
-			</div>
-			<div class="mdl-layout__header-row">
-				<!-- Navigation -->
-				<nav class="mdl-navigation">
-					<a class="mdl-navigation__link" href="/slideshow">SLIDESHOW</a>
-					<a class="mdl-navigation__link" href="/">MANAGE</a>
-					<a class="mdl-navigation__link" href="/search">SEARCH</a>
-					<a class="mdl-navigation__link" href="/album">ALBUMS</a>
-				</nav>
-			</div>
-		</header>
+		
 
 		<!-- Loading dialog -->
 		<div class="loading-dialog">
