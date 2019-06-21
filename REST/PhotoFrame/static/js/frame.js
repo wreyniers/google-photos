@@ -84,9 +84,9 @@ function showPreview(source, mediaItems) {
                                 .attr('data-height', item.mediaMetadata.height);
     // Add the thumbnail image to the link to the full image for fancybox.
     const thumbnailImage = $('<img />')
-                               .attr('src', thumbnailUrl)
+                               .attr('data-src', thumbnailUrl)
                                .attr('alt', captionText)
-                               .addClass('img-fluid rounded thumbnail');
+                               .addClass('img-fluid rounded thumbnail lozad');
     linkToFullImage.append(thumbnailImage);
 
     // The caption consists of the caption text and a link to open the image
@@ -118,8 +118,11 @@ function loadQueue() {
       hideLoadingDialog();
       showPreview(data.parameters, data.photos);
       hideLoadingDialog();
+      // If on slideshow page start slideshow without lazyloading, if anywhere else start lazyloading
       if (window.location.href.indexOf('slideshow') > 0) {
         startSlideShow();
+      } else {
+        lazyLoad();
       }
       console.log('Loaded queue.');
     },
@@ -178,6 +181,11 @@ $(document).ready(() => {
     // Unhide manage buttons
     afterClose: function() {
       $('.floating-button').show();
+      $('body').addClass('closed');
+      lazyLoad();
+    },
+    onInit: function() {
+      $('body').removeClass('closed');
     },
     // Automatically advance after 3s to next photo.
     slideShow: {autoStart: true, speed: 30000, progress: false},
@@ -199,3 +207,9 @@ $(document).ready(() => {
     window.location = '/logout';
   });
 });
+
+// Lazy loader function using lozad
+function lazyLoad() {
+  const observer = lozad();
+  observer.observe();    
+}
