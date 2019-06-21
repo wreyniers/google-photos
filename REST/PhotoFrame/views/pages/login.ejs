@@ -3,19 +3,16 @@
 
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
-    
-    <!-- Material Design Lite -->
+    <!-- <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">      
     <link rel="stylesheet" href="/mdlite/material.indigo-pink.min.css">
     <script src="/mdlite/material.min.js"></script>
-
-<link rel="stylesheet" href="/css/frame.css">
+    <link rel="stylesheet" href="/css/frame.css"> -->
     <title>Photo Frame Sample</title>
 </head>
 
-<body style="background-color: #3F51B5">
-		<header class="demo-header mdl-layout__header--fixed-header mdl-color-text--white mdl-layout__header">
+<body>
+		<!-- <header class="demo-header mdl-layout__header--fixed-header mdl-color-text--white mdl-layout__header">
 			<div class="mdl-layout__header-row">
 			          <span class="mdl-layout-title">Photo Frame - Login</span>
 			          <div class="mdl-layout-spacer"></div>
@@ -41,12 +38,13 @@
                	  		</div>
 			  	 	</div>
            </main>
-	   </div>
+	   </div> -->
 
         <script src="/js/jquery.slim.min.js"></script>
 
         <script>
             $(document).ready(function () {
+            	window.location = "/auth/google";
                 $('#login').on('click', function (e) {
                     // Make the request to the backend to log in.
                     window.location = "/auth/google";

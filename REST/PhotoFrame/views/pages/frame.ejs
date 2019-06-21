@@ -1,9 +1,11 @@
 <% include ../partials/head %>
 <section class="sample-content">
-	<div>
-		<h2>Photo frame album</h2>
-   	</div>
-	<div>
+	<div id="images-container"></div>
+	<div id="images_empty" style="display:none">
+	 		<img src="/imgs/null-results.png">
+	 		<p>No results, try searching again</p>
+	</div>
+		<div>
    	 	<p id="preview-description" style="display: none;">
         	<div class="snippet">
 				<span id="images-count">0</span> images loaded from
@@ -11,17 +13,13 @@
 			</div>
     	</p>
 	</div>	
-	<div id="images-container"></div>
-	<div id="images_empty" style="display:none">
-	 		<img src="/imgs/null-results.png">
-	 		<p>No results, try searching again</p>
-	</div>
+
 </section>
 
 
 <div class="floating-button">
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" id="startSlideshow">
-        <i class="material-icons">fullscreen</i>
+        <i class="material-icons">play_arrow</i>
 		<span class="float-btn-label">Start Slideshow</span>
     </button>
 </div>
