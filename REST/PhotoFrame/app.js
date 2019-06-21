@@ -87,10 +87,11 @@ auth(passport);
 // NOTE: A secret is used to sign the cookie. This is just used for this sample
 // app and should be changed.
 const sessionMiddleware = session({
-  resave: true,
+  resave: false,
   saveUninitialized: true,
   store: new fileStore({}),
   secret: 'photo frame sample',
+  rolling: true,
   cookie: {maxAge: 25920000000}  // set cookie to 200 days
 });
 
