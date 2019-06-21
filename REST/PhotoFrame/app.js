@@ -205,7 +205,7 @@ app.get(
     (req, res) => {
       // User has logged in.
       logger.info('User has logged in.');
-      res.redirect('/');
+      res.redirect('/slideshow');
     });
 
 // Loads the search page if the user is authenticated.
