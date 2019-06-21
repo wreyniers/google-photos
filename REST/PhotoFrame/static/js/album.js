@@ -22,7 +22,7 @@ function loadFromAlbum(name, id) {
     type: 'POST',
     url: '/loadFromAlbum',
     dataType: 'json',
-    data: {albumId: id},
+    data: {albumId: id, albumTitle: name},
     success: (data) => {
       console.log('Albums imported:' + JSON.stringify(data.parameters));
       if (data.photos && data.photos.length) {

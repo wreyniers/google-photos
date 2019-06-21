@@ -28,10 +28,15 @@ const session = require('express-session');
 const sessionFileStore = require('session-file-store');
 const uuid = require('uuid');
 const winston = require('winston');
+const fs = require('fs');
+const https = require('https');
 
 const app = express();
 const fileStore = sessionFileStore(session);
 const server = http.Server(app);
+const Q = require('q');
+
+const Stream = require('stream').Transform;
 
 // Use the EJS template engine
 app.set('view engine', 'ejs');
@@ -225,6 +230,9 @@ app.get('/slideshow', (req, res) => {
   renderIfAuthenticated(req, res, 'pages/slideshow');
 });
 
+// Loads the photo
+var publicDir = require('path').join(__dirname,'/public');
+app.use(express.static(publicDir));
 
 // Handles form submissions from the search page.
 // The user has made a selection and wants to load photos into the photo frame
@@ -290,6 +298,7 @@ app.post('/loadFromSearch', async (req, res) => {
 // Returns a list of photos if this was successful, or an error otherwise.
 app.post('/loadFromAlbum', async (req, res) => {
   const albumId = req.body.albumId;
+  const albumTitle = req.body.albumTitle;
   const userId = req.user.profile.id;
   const authToken = req.user.token;
 
@@ -299,7 +308,7 @@ app.post('/loadFromAlbum', async (req, res) => {
   // where the only parameter is the album ID.
   // Note that no other filters can be set, so this search will
   // also return videos that are otherwise filtered out in libraryApiSearch(..).
-  const parameters = {albumId};
+  const parameters = {albumId, albumTitle};
 
   // Submit the search request to the API and wait for the result.
   const data = await libraryApiSearch(authToken, parameters);
@@ -379,6 +388,17 @@ app.get('/getQueue', async (req, res) => {
   }
 });
 
+app.post('/saveCached', async (req, res) => {
+  const userId = req.user.profile.id;
+  const cachedPhotos = await mediaItemCache.getItem(userId);
+  const stored = await storage.getItem(userId);
+  const albumTitle = stored.parameters.albumTitle;
+  if (cachedPhotos) {
+    saveCachedPhotos(cachedPhotos, albumTitle);
+  }
+  res.status(200).send({});
+});
+
 
 
 // Start the server
@@ -425,6 +445,68 @@ function returnPhotos(res, userId, data, searchParameter) {
   }
 }
 
+function saveCachedPhotos(photos, albumTitle) {
+  const nq = config.numQueues || 1;
+  logger.info(`numQueues: ${nq}`);
+  for (var j = 0; j < nq; j++) {
+    recurseSavePhoto(photos, j, nq, albumTitle)
+    // photos.reduce((cur, prev) => cur.then((i) => savePhoto(photos[i], i, nq, len)), savePhoto(photos[j], j, nq, len));
+  }
+}
+
+function recurseSavePhoto(photos, i, numQueues, albumTitle) {
+  savePhoto(photos[i], i, numQueues, albumTitle).then(
+    (j) =>{
+      if (j < photos.length) {
+        recurseSavePhoto(photos, j, numQueues, albumTitle);
+      } else {
+        return;
+      }
+    })
+}
+function requestPhoto(url, path, i, numQueues, deferred) {
+  https.request(url, function(response) {
+    var data = new Stream();
+
+    response.on('data', function(chunk) {
+      data.push(chunk);
+    });
+
+    response.on('error', function (err){
+      logger.error(err);
+      deferred.reject(new Error(err));
+    })
+
+    response.on('end', function() {
+      logger.info(`Saving photo ${i} to ${path}`);
+      fs.writeFile(path, data.read(), function(err) {
+        if (err) {
+          logger.error(err)
+          deferred.reject(new Error(err));
+        } else {
+          logger.info(`Saved photo ${i} to ${path}`);
+          deferred.resolve(i + numQueues);
+        }
+      });
+    });
+  }).end();
+}
+
+function savePhoto(photo, i, numQueues, albumTitle) {
+  const path = config.savePath + '/'+ albumTitle + '/full/' + photo.filename;
+  const width = photo.mediaMetadata.width;
+  const height = photo.mediaMetadata.height;
+  const url = `${photo.baseUrl}=w${width}-h${height}`;
+
+  const deferred = Q.defer()
+  fs.mkdir(config.savePath + albumTitle + '/full/', function(err){
+    if (err) {
+       if (err.code == 'EEXIST') requestPhoto(url, path, i, numQueues, deferred)
+       else throw(err);
+    } else requestPhoto(url, path, i, numQueues, deferred);
+  })
+  return deferred.promise;
+}
 // Responds with an error status code and the encapsulated data.error.
 function returnError(res, data) {
   // Return the same status code that was returned in the error or use 500
@@ -457,6 +539,8 @@ async function libraryApiSearch(authToken, parameters) {
   let error = null;
 
   parameters.pageSize = config.searchPageSize;
+  let albumTitle = parameters.albumTitle;
+  delete parameters.albumTitle;
 
   try {
     // Loop while the number of photos threshold has not been met yet
@@ -509,6 +593,7 @@ async function libraryApiSearch(authToken, parameters) {
         {name: err.name, code: err.statusCode, message: err.message};
     logger.error(error);
   }
+  parameters.albumTitle = albumTitle;
 
   logger.info('Search complete.');
   return {photos, parameters, error};

@@ -158,6 +158,15 @@ function startSlideShow(){
   $('#images-container a').first().click()
 }
 
+$('#saveCached')
+  .on('click', (e) => $.ajax({
+    type: 'POST',
+    url: '/saveCached',
+    dataType: 'json',
+    success: (data) => {},
+    error: (data) => {}
+  }));
+
 $(document).ready(() => {
   // Load the queue of photos selected by the user for the photo
   loadQueue();

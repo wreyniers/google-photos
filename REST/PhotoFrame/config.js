@@ -48,4 +48,7 @@ config.albumPageSize = 50;
 // The API end point to use. Do not change.
 config.apiEndpoint = 'https://photoslibrary.googleapis.com';
 
+config.savePath = '/Sites/google-photos-frame/REST/PhotoFrame/public/photos/';
+config.numQueues = 10;
+
 module.exports = config;

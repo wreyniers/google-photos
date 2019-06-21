@@ -11,6 +11,7 @@
   },
   "main": "app.js",
   "dependencies": {
+    "q": "^1.5.1",
     "@fancyapps/fancybox": "^3.5.6",
     "async": "^2.6.1",
     "body-parser": "^1.18.3",
