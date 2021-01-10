@@ -30,6 +30,7 @@ const uuid = require('uuid');
 const winston = require('winston');
 const fs = require('fs');
 const https = require('https');
+const cron = require("node-cron");
 
 const app = express();
 const fileStore = sessionFileStore(session);
@@ -394,12 +395,51 @@ app.post('/saveCached', async (req, res) => {
   const stored = await storage.getItem(userId);
   const albumTitle = stored.parameters.albumTitle;
   if (cachedPhotos) {
-    saveCachedPhotos(cachedPhotos, albumTitle);
+    console.log (cachedPhotos);
+    // saveCachedPhotos(cachedPhotos, albumTitle);
   }
   res.status(200).send({});
 });
 
 
+// schedule tasks to be run on the server
+// cron.schedule("30 * * * * *", async function(req, res) {
+//   console.log("---------------------");
+//   console.log("Running Cron Job");
+//   const userId = req.user.profile.id;
+//   const cachedPhotos = await mediaItemCache.getItem(userId);
+//   const stored = await storage.getItem(userId);
+//   const albumTitle = "Photo Frame";
+//   if (cachedPhotos) {
+//       //saveCachedPhotos(cachedPhotos, albumTitle);
+//   }
+//   res.status(200).send({});
+// });
+
+function getPhotos(req, res) {
+  console.log("---------------------");
+  console.log("Running Cron Job");
+  const userId = 104005232522832486250;
+  const stored = storage.getItem(userId);
+  const albumTitle = "Photo Frame";
+  const filePath = "C:/Sites/google-photos-frame/REST/PhotoFrame/persist-mediaitemcache/a7edd972ebf2eef731fd92d98b80532a";
+  fs.readFile(filePath, {encoding: 'utf-8'}, function(err,data){
+    if (!err) {
+        //console.log('received data: ' + data);
+        const cachedPhotos = JSON.parse(data);
+        
+          console.log(cachedPhotos.value);
+          if (cachedPhotos) {
+              saveCachedPhotos(cachedPhotos.value, albumTitle);
+          }
+          res.status(200).send({});
+    } else {
+        console.log(err);
+    }
+  });
+};
+
+//getPhotos();
 
 // Start the server
 server.listen(config.port, () => {
@@ -493,6 +533,7 @@ function requestPhoto(url, path, i, numQueues, deferred) {
 }
 
 function savePhoto(photo, i, numQueues, albumTitle) {
+  console.log (photo);
   const path = config.savePath + '/'+ albumTitle + '/full/' + photo.filename;
   const width = photo.mediaMetadata.width;
   const height = photo.mediaMetadata.height;

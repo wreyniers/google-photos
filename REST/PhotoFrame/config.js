@@ -17,17 +17,17 @@
 const config = {};
 
 // The OAuth client ID from the Google Developers console.
-config.oAuthClientID = 'ADD YOUR CLIENT ID';
+config.oAuthClientID = '535609016964-nlqeod6fcjo5lal5kj8ktrgpbfrrgiv1.apps.googleusercontent.com';
 
 // The OAuth client secret from the Google Developers console.
-config.oAuthclientSecret = 'ADD YOUR CLIENT SECRET';
+config.oAuthclientSecret = 'lsRx5GiR377P_ShJJuxDV8KE';
 
 // The callback to use for OAuth requests. This is the URL where the app is
 // running. For testing and running it locally, use 127.0.0.1.
-config.oAuthCallbackUrl = 'http://127.0.0.1:8080/auth/google/callback';
+config.oAuthCallbackUrl = 'http://photoframe.gotdns.com:8181/auth/google/callback';
 
 // The port where the app should listen for requests.
-config.port = 8080;
+config.port = 8181;
 
 // The scopes to request. The app requires the photoslibrary.readonly and
 // plus.me scopes.
@@ -37,7 +37,7 @@ config.scopes = [
 ];
 
 // The number of photos to load for search requests.
-config.photosToLoad = 150;
+config.photosToLoad = 500;
 
 // The page size to use for search requests. 100 is reccommended.
 config.searchPageSize = 100;

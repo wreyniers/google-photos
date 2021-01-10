@@ -50,7 +50,7 @@ function showPreview(source, mediaItems) {
   // Loop over each media item and render it.
   $.each(mediaItems, (i, item) => {
     // Construct a thumbnail URL from the item's base URL at a small pixel size.
-    const thumbnailUrl = `${item.baseUrl}=w256-h256`;
+    const thumbnailUrl = `${item.baseUrl}=w512-h512`;
     // Constuct the URL to the image in its original size based on its width and
     // height.
     const fullUrl = `${item.baseUrl}=w${item.mediaMetadata.width}-h${
@@ -153,6 +153,16 @@ function shuffle(){
     });                    
 }
 
+function startScroll(){
+  if ( $('#images-container').hasClass("scrolling") ) {
+    $('#images-container').removeClass("scrolling")  
+  }
+  else {
+    $('#images-container').addClass("scrolling")
+  }
+}
+
+
 function startSlideShow(){
   shuffle(); // Shuffle before starting slideshow
   $('#images-container a').first().click()
@@ -207,6 +217,7 @@ $(document).ready(() => {
   // Clicking the 'view fullscreen' button opens the gallery from the first
   // image.
   $('#startSlideshow').on('click', (e) => {startSlideShow()});
+  $('#startScroll').on('click', (e) => {startScroll()});
   $('#manage').on('click', (e) => {
     window.location = '/';
   })    

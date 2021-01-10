@@ -72,7 +72,7 @@ pre {
 /* Frame page */
 
 .sample-content {
-  padding: 0 2.5%;
+  padding: 0;
   margin: 0 auto;
 }
 
@@ -187,7 +187,21 @@ pre {
 
 #images-container,
 #images_empty {
-  padding: 2.5% 0;
+  padding: 0;
+}
+
+#images-container.scrolling {
+  animation: scroll 600s infinite;
+  transform: translate3d(0,0,0);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translate3d(0,0,0);
+  }
+  100% {
+    transform: translate3d(0,-95%,0);
+  }
 }
 
 
@@ -199,16 +213,16 @@ pre {
 #images-container:after {
   content: '';
   flex-grow: 999999999;
-  min-width: 200px;
+  min-width: 512px;
   height: 0; }
 #images-container > * {
   position: relative;
   display: block;
-  height: 200px;
+  height: 512px;
   margin: 2.5px;
   flex-grow: 1; }
 #images-container > * > img {
-  height: 200px;
+  height: 512px;
   object-fit: cover;
   max-width: 100%;
   min-width: 100%;
